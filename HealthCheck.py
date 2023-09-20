@@ -84,7 +84,6 @@ def HealthCheck(file: str):
 
     :parameter file: The path to the YAML formatted file in string form 
     """
-    
     # open and parse the file using PyYAML (converts to dictionary)
     with open(file, 'r') as file:
         data = yaml.safe_load(file)
