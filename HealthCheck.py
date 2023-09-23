@@ -32,40 +32,17 @@ def TestEndpoint(endpoint: dict):
     """
     method = "GET"  # initialize method
     r = None # initialize request tracker
-
+    
     # check if method value is included
     if "method" in endpoint:
         method = endpoint["method"]
 
     if method == "GET":
-        # if headers are included, make the request including them
-        if "headers" in endpoint:
-            r = requests.get(endpoint["url"], endpoint["headers"])
-        # otherwise, make the request without headers
-        else:
-            r = requests.get(endpoint["url"])
+        r = requests.get(endpoint["url"], headers = endpoint.get("headers"))
     elif method == "POST":
-        # if body and headers included, make the request with those parameters
-        if "body" in endpoint and "headers" in endpoint:
-            r = requests.post(
-                endpoint["url"], endpoint["body"], headers=endpoint["headers"])
-        # if just the body is included
-        elif "body" in endpoint:
-            r = requests.post(endpoint["url"], endpoint["body"])
+        r = requests.post(endpoint["url"], endpoint.get("body"), headers=endpoint.get("headers"))
     elif method == "PUT":
-        # if body and headers included, make the request with those parameters
-        if "body" in endpoint and "headers" in endpoint:
-            r = requests.put(
-                endpoint["url"], endpoint["body"], headers=endpoint["headers"])
-        # only body included
-        elif "body" in endpoint:
-            r = requests.put(endpoint["url"], endpoint["body"])
-        # only headers included
-        elif "headers" in endpoint:
-            r = requests.put(endpoint["url"], headers=endpoint["headers"])
-        # body and headers aren't included
-        else:
-            r = requests.put(endpoint["url"])
+        r = requests.put(endpoint["url"], endpoint.get("body"), headers=endpoint.get("headers"))
     return FindOutput(r) # determine if the request is UP or DOWN
 
 def HealthCheck(file: str):
@@ -109,7 +86,7 @@ def HealthCheck(file: str):
                 avail = str(round(avail))
                 print(d + " has " + avail + "% availability percentage")
             print("\n")
-            time.sleep(15)  # start the next test cycle in 15s
+            time.sleep(1)  # start the next test cycle in 15s
             testcounter += 1
     except KeyboardInterrupt:
         print("Exiting program")
