@@ -86,7 +86,7 @@ def HealthCheck(file: str):
                 avail = str(round(avail))
                 print(d + " has " + avail + "% availability percentage")
             print("\n")
-            time.sleep(1)  # start the next test cycle in 15s
+            time.sleep(15)  # start the next test cycle in 15s
             testcounter += 1
     except KeyboardInterrupt:
         print("Exiting program")
