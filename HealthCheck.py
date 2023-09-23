@@ -31,6 +31,7 @@ def TestEndpoint(endpoint: dict):
     :return: "UP" if the given endpoint's request had an outcome of "UP" and "DOWN" otherwise
     """
     method = "GET"  # initialize method
+    r = None # initialize request tracker
 
     # check if method value is included
     if "method" in endpoint:
@@ -40,41 +41,32 @@ def TestEndpoint(endpoint: dict):
         # if headers are included, make the request including them
         if "headers" in endpoint:
             r = requests.get(endpoint["url"], endpoint["headers"])
-            # determine the outcome of the request (UP or DOWN)
-            return FindOutput(r)
         # otherwise, make the request without headers
         else:
             r = requests.get(endpoint["url"])
-            return FindOutput(r)
     elif method == "POST":
         # if body and headers included, make the request with those parameters
         if "body" in endpoint and "headers" in endpoint:
             r = requests.post(
                 endpoint["url"], endpoint["body"], headers=endpoint["headers"])
-            return FindOutput(r)
         # if just the body is included
         elif "body" in endpoint:
             r = requests.post(endpoint["url"], endpoint["body"])
-            return FindOutput(r)
     elif method == "PUT":
         # if body and headers included, make the request with those parameters
         if "body" in endpoint and "headers" in endpoint:
             r = requests.put(
                 endpoint["url"], endpoint["body"], headers=endpoint["headers"])
-            return FindOutput(r)
         # only body included
         elif "body" in endpoint:
             r = requests.put(endpoint["url"], endpoint["body"])
-            return FindOutput(r)
         # only headers included
         elif "headers" in endpoint:
             r = requests.put(endpoint["url"], headers=endpoint["headers"])
-            return FindOutput(r)
         # body and headers aren't included
         else:
             r = requests.put(endpoint["url"])
-            return FindOutput(r)
-
+    return FindOutput(r) # determine if the request is UP or DOWN
 
 def HealthCheck(file: str):
     """
